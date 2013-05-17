@@ -113,9 +113,9 @@ const char *find_indent(const char *filename) {
 				score.tabs++;
 			}
 			break;
-		case pair(lt_space_only, lt_no_indent):
-		case pair(lt_begin_space, lt_no_indent):
-		case pair(lt_no_indent, lt_no_indent):
+		case pair(lt_space_only, lt_space_only):
+		case pair(lt_begin_space, lt_space_only):
+		case pair(lt_no_indent, lt_space_only):
 			spaces = cur_lt.spaces - prev_lt.spaces;
 			if(spaces > 1 && spaces <= 8) {
 				score.spaces[spaces]++;
