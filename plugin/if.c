@@ -46,19 +46,20 @@ const char *find_indent(const char *filename) {
 	clock_gettime(CLOCK_REALTIME, &a);
 #endif
 	static char ret[128];
-	char *buf = malloc(163842);
+    int bufsize = 163842;
+	char *buf = malloc(bufsize);
 	int fd = open(filename, O_RDONLY);
 	if(fd == -1) {
 		snprintf(ret, sizeof(ret), "echo \"Failed to open %s: %s\"", filename, strerror(errno));
 		goto end;
 	}
-	ssize_t nb = read(fd, buf + 1, sizeof(buf) - 2);
+	ssize_t nb = read(fd, buf + 1, bufsize - 2);
 	if(nb == -1) {
 		snprintf(ret, sizeof(ret), "echo \"Failed to read %s: %s\"", filename, strerror(errno));
 		goto end;
 	}
 	buf[0] = '\0';
-	buf[sizeof(buf) - 1] = '\n';
+	buf[bufsize - 1] = '\n';
 	
 	bool skip_next_line = false;
 	struct {
