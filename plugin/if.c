@@ -67,7 +67,7 @@ const char *find_indent(const char *filename) {
 		int mixed[9];
 	} score = {0};
 	struct lt cur_lt = {lt_null, 0, 0}, prev_lt;
-    for(char *bp = buf + 1; bp < (&buf)[1]; bp++) {
+	for(char *bp = buf + 1; bp < (&buf)[1]; bp++) {
 		prev_lt = cur_lt;
 		if(!skip_next_line)
 		do {

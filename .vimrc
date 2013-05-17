@@ -69,6 +69,9 @@ noremap <LEADER>n :Invbg<CR>
 noremap <LEADER>w *
 noremap <LEADER>b #
 "let g:qname_hotkey="0"
+set sts=4
+set ts=4
+set sw=4
 
 set laststatus=2
 let g:buftabs_in_statusline=1
