@@ -1,0 +1,2 @@
+bufdo set noexpandtab
+
