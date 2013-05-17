@@ -46,16 +46,16 @@ const char *find_indent(const char *filename) {
 	clock_gettime(CLOCK_REALTIME, &a);
 #endif
 	static char ret[128];
-	static char buf[163842];
+	char *buf = malloc(163842);
 	int fd = open(filename, O_RDONLY);
 	if(fd == -1) {
 		snprintf(ret, sizeof(ret), "echo \"Failed to open %s: %s\"", filename, strerror(errno));
-		return ret;
+		goto end;
 	}
 	ssize_t nb = read(fd, buf + 1, sizeof(buf) - 2);
 	if(nb == -1) {
 		snprintf(ret, sizeof(ret), "echo \"Failed to read %s: %s\"", filename, strerror(errno));
-		return ret;
+		goto end;
 	}
 	buf[0] = '\0';
 	buf[sizeof(buf) - 1] = '\n';
@@ -194,6 +194,8 @@ const char *find_indent(const char *filename) {
 	printf(">>>%ld<<<\n", (long) (b.tv_nsec - a.tv_nsec));
 	abort();
 #endif
+end:
+	free(buf);
 	return ret;
 }
 
