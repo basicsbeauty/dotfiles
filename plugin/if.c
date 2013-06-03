@@ -1,7 +1,7 @@
 /*
 gcc -Wall -std=gnu99 -O3 -o if if.c -DSTANDALONE 
 gcc -Wall -std=gnu99 -O3 -shared -fPIC -o if.so if.c 
-gcc -Wall -std=gnu99 -O3 -dynamiclib -o if.dylib if.c 
+clang -Wall -std=gnu99 -O3 -dynamiclib -o if.dylib if.c 
 */
 
 #include <sys/types.h>

@@ -1,6 +1,11 @@
 function! FindIdent()
-        let l:sofile = expand("~/.vim/plugin/if.so")
-        execute libcall(l:sofile, "find_indent", expand("%"))
+    if has("macunix")
+        let l:ext = "dylib"
+    else
+        let l:ext = "so"
+    endif
+    let l:sofile = expand("~/.vim/plugin/if." . l:ext)
+    execute libcall(l:sofile, "find_indent", expand("%"))
 endfunction
 
 augroup IndentFinder
