@@ -40,29 +40,13 @@ static void loop(int scores[static 9], int type, struct lt *result_lt) {
 	}
 }
 
-const char *find_indent(const char *filename) {
+const char *find_indent(const char *bp) {
 #ifdef PROFILE
 	struct timespec a;
 	clock_gettime(CLOCK_REALTIME, &a);
 #endif
 	static char ret[128];
-    int bufsize = 163842;
-	char *buf = malloc(bufsize);
-	int fd = open(filename, O_RDONLY);
-	if(fd == -1) {
-		snprintf(ret, sizeof(ret), "echo \"Failed to open %s: %s\"", filename, strerror(errno));
-		goto end;
-	}
-	ssize_t nb = read(fd, buf + 1, bufsize - 2);
-	if(nb == -1) {
-		snprintf(ret, sizeof(ret), "echo \"Failed to read %s: %s\"", filename, strerror(errno));
-        close(fd);
-		goto end;
-	}
-    close(fd);
-
-	buf[0] = '\0';
-	buf[bufsize - 1] = '\n';
+	printf("%p\n", bp);
 	
 	bool skip_next_line = false;
 	struct {
@@ -71,11 +55,11 @@ const char *find_indent(const char *filename) {
 		int mixed[9];
 	} score = {0};
 	struct lt cur_lt = {lt_null, 0, 0}, prev_lt;
-	for(char *bp = buf + 1, *ep = buf + nb; bp < ep; bp++) {
+	while(1) {
 		prev_lt = cur_lt;
 		if(!skip_next_line)
 		do {
-			if(*bp == '\n') {
+			if(*bp == '\n' || *bp == '\0') {
 				cur_lt.type = lt_null;
 				break;
 			}
@@ -86,7 +70,7 @@ const char *find_indent(const char *filename) {
 			cur_lt.spaces = 0;
 			cur_lt.tabs = 0;
 			for(; *bp == ' ' || *bp == '\t'; bp++) {
-				if(*bp == '\n') break;
+				if(*bp == '\n' || *bp == '\0') break;
 				if(*bp == ' ') cur_lt.spaces++;
 				if(*bp == '\t') cur_lt.tabs++;
 			}
@@ -102,8 +86,10 @@ const char *find_indent(const char *filename) {
 				cur_lt.type = cur_lt.spaces < 8 ? lt_begin_space : lt_space_only;
 			}
 		} while(0);
-		for (; *bp != '\n'; bp++);
+		for (; *bp != '\n' && *bp != '\0'; bp++);
+		if(*bp == '\0') break;
 		skip_next_line = bp[-1] == '\\';
+		bp++;
 		#define pair(a, b) ((a) * 0x10 + (b))
 		int spaces;
 		switch(pair(prev_lt.type, cur_lt.type)) {
@@ -198,8 +184,6 @@ const char *find_indent(const char *filename) {
 	printf(">>>%ld<<<\n", (long) (b.tv_nsec - a.tv_nsec));
 	abort();
 #endif
-end:
-	free(buf);
 	return ret;
 }
 
