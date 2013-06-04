@@ -188,4 +188,20 @@ au FileType * setl fo-=cro
 "let g:detectindent_max_lines_to_analyse = 10000
 if has("gui_running")
     set guioptions=grL
+    set guifont=Menlo\ Regular:h11
 endif
+set listchars=tab:»\ ,trail:·
+noremap ,L :set list!<CR>
+
+function! ShiftTab()
+        let l:first = 1
+        while l:first || (virtcol('$') - 1) % &sw
+                let l:line = getline('.')
+                if match(l:line[-1:], '[ \t]') == -1
+                        return
+                endif
+                call setline('.', l:line[:-2])
+                let l:first = 0
+        endwhile
+endfunction
+inoremap <A-Tab> a<BS><ESC>:call ShiftTab()<CR>a
