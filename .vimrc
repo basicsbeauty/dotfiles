@@ -134,6 +134,7 @@ nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 imap <C-w> <C-o><C-w>
+vmap <C-c> "+y
 set hl=lr
 "drupal stuff
 set expandtab
@@ -205,3 +206,33 @@ function! ShiftTab()
         endwhile
 endfunction
 inoremap <A-Tab> a<BS><ESC>:call ShiftTab()<CR>a
+
+function! CH()
+    let l:fn = expand("%")
+    let l:base = substitute(l:fn, "\.[^\.]*$", "", 0)
+    if l:fn =~ "\.h[^\.]*$"
+        if filereadable(l:base . ".cc")
+            execute "edit" l:base . ".cc"
+        elseif filereadable(l:base . ".cpp")
+            execute "edit" l:base . ".cpp"
+        elseif filereadable(l:base . ".c")
+            execute "edit" l:base . ".c"
+        else
+            echo "Couldn't find .c{c,cpp,}"
+        endif
+    elseif l:fn =~ "\.c[^\.]*$"
+        if filereadable(l:base . ".h")
+            execute "edit" l:base . ".h"
+        elseif filereadable(l:base . ".hpp")
+            execute "edit" l:base . ".hpp"
+        elseif filereadable(l:base . ".hh")
+            execute "edit" l:base . ".hh"
+        else
+            echo "Couldn't find .h{,pp,h}"
+        endif
+    else
+        echo "Not a C/C++ file?"
+    endif
+endfunction
+
+:command! H call CH()
