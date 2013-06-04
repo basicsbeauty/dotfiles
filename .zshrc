@@ -13,7 +13,15 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 export KEYTIMEOUT=1
-export PS1="%~ %% "
+case "`hostname`" in
+nicholas-allegras-macbook-pro.local)
+    export PS1="%~ %% ";;
+nallegra-goobuntu.mtv.corp.google.com)
+    export PS1="%F{blue}%~ \$ %f";;
+*)
+    export PS1="%F{red}%~ @ %f";;
+esac
+    
 . ~/.stuff
 bk() { bindkey "$1" "$2"; bindkey -a "$1" "$2" }
 bk "^A" beginning-of-line
