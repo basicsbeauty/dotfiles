@@ -29,11 +29,16 @@ bk "^E" end-of-line
 bk "^[b" vi-backward-word
 bk "^[f" forward-word
 bk "^R" history-incremental-search-backward
+bk "^[^?" backward-kill-word # option-del
+bk "^W" backward-delete-word    # vi-backward-kill-word
+bk "^[[H" beginning-of-line
+bk "^[[F" end-of-line
+bk "^[[3~" delete-char
+bk "^[[1;3D" vi-backward-word
+bk "^[[1;3C" forward-word
 unfunction bk
 
 # the difference is important
-bindkey "^[^?" backward-kill-word # option-del
-bindkey "^W" backward-delete-word    # vi-backward-kill-word
 bindkey "^H" backward-delete-char  # vi-backward-delete-char
 bindkey "^U" kill-line             # vi-kill-line
 bindkey "^?" backward-delete-char  # vi-backward-delete-char
@@ -48,3 +53,7 @@ select-word-style bash
 fpath=(~/.zshfunctions $fpath)
 autoload forward-word-match
 zle -N forward-word forward-word-match
+
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias ls='ls --color=auto'

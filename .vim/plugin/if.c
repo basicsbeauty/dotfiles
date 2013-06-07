@@ -165,14 +165,14 @@ const char *find_indent(const char *bp) {
 	int n = result_lt.spaces;
 	switch(result_lt.type) {
 	case lt_space_only:
-		snprintf(ret, sizeof(ret), "set sts=%d | set tabstop=%d | set expandtab | set shiftwidth=%d", n, n, n);
+		snprintf(ret, sizeof(ret), "set softtabstop=%d | set tabstop=%d | set expandtab | set shiftwidth=%d", n, n, n);
 		break;
 	case lt_tab_only:
-		snprintf(ret, sizeof(ret), "set sts=0 | set tabstop=%d | set noexpandtab | set shiftwidth=%d", n, n);
+		snprintf(ret, sizeof(ret), "set softtabstop=0 | set tabstop=%d | set noexpandtab | set shiftwidth=%d", n, n);
 		break;
 	case lt_mixed:
 		// ???
-		snprintf(ret, sizeof(ret), "set sts=4 | set tabstop=%d | set noexpandtab | set shiftwidth=%d", n, n);
+		snprintf(ret, sizeof(ret), "set softtabstop=4 | set tabstop=%d | set noexpandtab | set shiftwidth=%d", n, n);
 		break;
 	default:
 		break;

@@ -13,10 +13,10 @@ vnoremap <Down> gj
 vnoremap <Up> gk
 inoremap <Down> <C-o>gj
 inoremap <Up> <C-o>gk
-inoremap  <silent> <Home> g<Home>
-noremap  <silent> <End>  g<End>
-inoremap <silent> <Home> <C-o>g<Home>
-inoremap <silent> <End>  <C-o>g<End>
+inoremap  <silent> <Home> ^
+noremap  <silent> <End>  $
+inoremap <silent> <Home> <C-o>^
+inoremap <silent> <End>  <C-o>$
 noremap <C-k> <C-u>
 noremap <C-j> <C-d>
 noremap <S-j> 5j
@@ -135,6 +135,7 @@ nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 imap <C-w> <C-o><C-w>
 vmap <C-c> "+y
+imap <C-v> <ESC>"+pa
 set hl=lr
 "drupal stuff
 set expandtab
