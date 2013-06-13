@@ -236,4 +236,9 @@ function! CH()
     endif
 endfunction
 
-:command! H call CH()
+command! H call CH()
+highlight ExtraWhitespace ctermbg=black guibg=black
+match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace //
+au InsertLeave * match ExtraWhitespace /\s\+$/
+

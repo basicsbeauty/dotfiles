@@ -46,7 +46,6 @@ const char *find_indent(const char *bp) {
 	clock_gettime(CLOCK_REALTIME, &a);
 #endif
 	static char ret[128];
-	printf("%p\n", bp);
 	
 	bool skip_next_line = false;
 	struct {
