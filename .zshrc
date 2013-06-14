@@ -21,7 +21,7 @@ nallegra-goobuntu.mtv.corp.google.com)
 *)
     export PS1="%F{red}%~ @ %f";;
 esac
-    
+
 . ~/.stuff
 bk() { bindkey "$1" "$2"; bindkey -a "$1" "$2" }
 bk "^A" beginning-of-line
@@ -56,4 +56,8 @@ zle -N forward-word forward-word-match
 
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-alias ls='ls --color=auto'
+if [ -e /Applications ]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+fi
