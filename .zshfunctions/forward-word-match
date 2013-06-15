@@ -29,7 +29,7 @@ while (( count-- )); do
       word=$matched_words[4]$matched_words[5]
     else
       # skip the word and trailing whitespace
-      word=$matched_words[5]#$matched_words[6]
+      word=$matched_words[5] #$matched_words[6]
     fi
   fi
 
