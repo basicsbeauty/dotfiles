@@ -74,6 +74,8 @@ set sw=4
 
 set laststatus=2
 let g:buftabs_in_statusline=1
+set statusline=\ %{buftabs#statusline()}%=%l,%c\ 
+
 :noremap <C-,> :bprev<CR>
 :noremap <C-.> :bnext<CR>
 nnoremap ,1 :1b<CR>
