@@ -876,24 +876,23 @@ endfunction
 :command -nargs=? -range -bang CC		:let b:FTCSaveCol = virtcol('.')|<line1>,<line2>call <SID>DoCommentify(1, <q-bang>, <f-args>)
 :command -nargs=? -range -bang UC		:let b:FTCSaveCol = virtcol('.')|<line1>,<line2>call <SID>DoCommentify(2, <q-bang>, <f-args>)
 
-"if !hasmapto('<Plug>FtcTc') && mapcheck("<M-c>", "nvi") == ""
-if !hasmapto('<Plug>FtcTc')
-	nmap <unique>	<M-c>	<Plug>FtcTc
-	vmap <unique>	<M-c>	<Plug>FtcTc
-	imap <unique>	<M-c>	<esc><Plug>FtcTc
-endif
-noremap <unique> <script> <Plug>FtcTc  :TC<CR>j
-
-
-
-:command -nargs=? -range DLAC		:let b:FTCSaveCol = virtcol('.')|<line1>,<line2>call <SID>DLAC(<f-args>)
-if !hasmapto('<Plug>FtcDLAC')
-	nmap <unique>	<C-c>	<Plug>FtcDLAC
-	vmap <unique>	<C-c>	<Plug>FtcDLAC
-" [Feral:194/03@07:08] Collision, See: <URL:VIMHELP:i_CTRL-C>
+" if !hasmapto('<Plug>FtcTc') && mapcheck("<M-c>", "nvi") == ""
+"if !hasmapto('<Plug>FtcTc')
+"	nmap <unique>	<M-c>	<Plug>FtcTc
+"	vmap <unique>	<M-c>	<Plug>FtcTc
+"	imap <unique>	<M-c>	<esc><Plug>FtcTc
+"endif
+"noremap <unique> <script> <Plug>FtcTc  :TC<CR>j
+"
+"
+"
+":command -nargs=? -range DLAC		:let b:FTCSaveCol = virtcol('.')|<line1>,<line2>call <SID>DLAC(<f-args>)
+"if !hasmapto('<Plug>FtcDLAC')
+"	nmap <unique>	<C-c>	<Plug>FtcDLAC
+"	vmap <unique>	<C-c>	<Plug>FtcDLAC
 "	imap <unique>	<C-c>	<esc><Plug>FtcDLAC
-endif
-noremap <unique> <script> <Plug>FtcDLAC  :DLAC<cr>
+"endif
+"noremap <unique> <script> <Plug>FtcDLAC  :DLAC<cr>
 
 
 " [Feral:053/05@07:50] Comment and fold
@@ -908,3 +907,4 @@ noremap <unique> <script> <Plug>FtcDLAC  :DLAC<cr>
 
 let &cpo = s:save_cpo
 "End of file
+
