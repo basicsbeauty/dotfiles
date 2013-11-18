@@ -179,8 +179,10 @@ nmap <LEADER>t :cs find t <C-R>=expand("<cword>")<CR><CR>
 "nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <LEADER>d :cs find d <C-R>=expand("<cword>")<CR><CR>  
 nmap <CR> <C-]>
+au CmdwinEnter [:>] nunmap <CR>
+au CmdwinLeave [:>] nmap <CR> <C-]>
 
-ab ASC TAsmCtx,TEnt
+"ab ASC TAsmCtx,TEnt
 set wildmenu
 set wildmode=list:longest
 

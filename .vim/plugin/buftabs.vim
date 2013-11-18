@@ -187,19 +187,23 @@ endf
 " Draw the buftabs
 "
 
-function! Buftabs_show(deleted_buf)
+function! Buftabs_purge()
+	let s:lists = {}
+endfunction
+
+function! s:update()
 
 	let l:i = 1
-	let s:list = ''
+	let l:list = ''
 	let l:start = 0
 	let l:end = 0
 	if ! exists("w:from") 
 		let w:from = 0
 	endif
 
-	if ! exists("w:buftabs_enabled")
-		return
-	endif
+	"if ! exists("w:buftabs_enabled")
+	"	return
+	"endif
 
 	let l:buftabs_marker_modified = "!"
 	if exists("g:buftabs_marker_modified")
@@ -227,7 +231,7 @@ function! Buftabs_show(deleted_buf)
 
 		" Only show buffers in the list, and omit help screens
 	
-		if buflisted(l:i) && getbufvar(l:i, "&modifiable") && a:deleted_buf != l:i
+		if buflisted(l:i) && getbufvar(l:i, "&modifiable") " && a:deleted_buf != l:i
 
 			" Get the name of the current buffer, and escape characters that might
 			" mess up the statusline
@@ -245,24 +249,24 @@ function! Buftabs_show(deleted_buf)
 			" an appropriate symbol (an exclamation mark by default)
 
 			if winbufnr(winnr()) == l:i
-				let l:start = strlen(s:list)
-				let s:list = s:list . "\x01"
+				let l:start = strlen(l:list)
+				let l:list = l:list . "\x01"
 			else
-				let s:list = s:list . ' '
+				let l:list = l:list . ' '
 			endif
 				
-			let s:list = s:list . l:i . l:buftabs_separator
-			let s:list = s:list . l:name
+			let l:list = l:list . l:i . l:buftabs_separator
+			let l:list = l:list . l:name
 
 			if getbufvar(l:i, "&modified") == 1
-				let s:list = s:list . l:buftabs_marker_modified
+				let l:list = l:list . l:buftabs_marker_modified
 			endif
 			
 			if winbufnr(winnr()) == l:i
-				let s:list = s:list . "\x02"
-				let l:end = strlen(s:list)
+				let l:list = l:list . "\x02"
+				let l:end = strlen(l:list)
 			else
-				let s:list = s:list . ' '
+				let l:list = l:list . ' '
 			endif
 		end
 
@@ -281,7 +285,7 @@ function! Buftabs_show(deleted_buf)
 		let w:from = l:end - l:width 
 	endif
 		
-	let s:list = strpart(s:list, w:from, l:width)
+	let l:list = strpart(l:list, w:from, l:width)
 
 	" Replace the magic characters by visible markers for highlighting the
 	" current buffer. The markers can be simple characters like square brackets,
@@ -296,14 +300,14 @@ function! Buftabs_show(deleted_buf)
 
 	if exists("g:buftabs_inactive_highlight_group")
 		if exists("g:buftabs_in_statusline")
-			let s:list = '%#' . g:buftabs_inactive_highlight_group . '#' . s:list
-			let s:list .= '%##'
+			let l:list = '%#' . g:buftabs_inactive_highlight_group . '#' . l:list
+			let l:list .= '%##'
 			let l:buftabs_marker_end = l:buftabs_marker_end . '%#' . g:buftabs_inactive_highlight_group . '#'
 		end
 	end
 
-	let s:list = substitute(s:list, "\x01", l:buftabs_marker_start, 'g')
-	let s:list = substitute(s:list, "\x02", l:buftabs_marker_end, 'g')
+	let l:list = substitute(l:list, "\x01", l:buftabs_marker_start, 'g')
+	let l:list = substitute(l:list, "\x02", l:buftabs_marker_end, 'g')
 
 	" Show the list. The buftabs_in_statusline variable determines of the list
 	" is displayed in the command line (volatile) or in the statusline
@@ -312,14 +316,14 @@ function! Buftabs_show(deleted_buf)
 	if exists("g:buftabs_in_statusline")
 		" Only overwrite the statusline if buftabs#statusline() has not been
 		" used to specify a location
-		if match(&statusline, "%{buftabs#statusline()}") == -1
-			let &l:statusline = s:list . w:original_statusline
-		end
+		"if match(&statusline, "%{buftabs#statusline()}") == -1
+		"	let &l:statusline = l:list . w:original_statusline
+		"end
+		let s:lists[winnr()] = l:list
 	else
 		redraw
-		call s:Pecho(s:list)
+		call s:Pecho(l:list)
 	end
-
 endfunction
 
 
@@ -330,7 +334,10 @@ endfunction
 "
 
 function! buftabs#statusline(...)
-	return s:list
+	if !has_key(s:lists, winnr())
+		call s:update()
+	endif
+	return s:lists[winnr()]
 endfunction
 
 
@@ -340,11 +347,12 @@ endfunction
 "
 
 autocmd VimEnter * call Buftabs_enable()
-autocmd VimEnter,BufNew,BufEnter,BufWritePost * call Buftabs_show(-1)
-autocmd BufDelete * call Buftabs_show(expand('<abuf>'))
-if version >= 700
-	autocmd InsertLeave,VimResized * call Buftabs_show(-1)
-end
+"autocmd VimEnter,BufNew,BufEnter,BufWritePost,BufWinEnter * call Buftabs_show(-1)
+autocmd VimEnter,BufNew,BufEnter,BufWritePost,BufWinEnter * call Buftabs_purge()
+"autocmd BufDelete * call Buftabs_show(expand('<abuf>'))
+"if version >= 700
+"	autocmd InsertLeave,VimResized * call Buftabs_show(-1)
+"end
 
 " vi: ts=2 sw=2
 
