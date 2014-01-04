@@ -27,7 +27,7 @@ bk() { bindkey "$1" "$2"; bindkey -a "$1" "$2" }
 bk "^A" beginning-of-line
 bk "^E" end-of-line
 bk "^[b" vi-backward-word
-bk "^[f" forward-word
+bk "^[f" vi-forward-word
 bk "^R" history-incremental-search-backward
 bk "^[^?" backward-kill-word # option-del
 bk "^W" backward-delete-word    # vi-backward-kill-word
@@ -35,7 +35,7 @@ bk "^[[H" beginning-of-line
 bk "^[[F" end-of-line
 bk "^[[3~" delete-char
 bk "^[[1;3D" vi-backward-word
-bk "^[[1;3C" forward-word
+bk "^[[1;3C" vi-forward-word
 unfunction bk
 
 # the difference is important

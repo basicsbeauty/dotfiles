@@ -3,7 +3,7 @@ defs=.defs
 --type-set
 txt=.txt
 --type-set
-rkt=.rkt
+rs=.rs
 --type-set
 go=.go
 --type-set
