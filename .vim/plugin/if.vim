@@ -1,5 +1,6 @@
 function! FindIdent()
-    if has("macunix")
+    "if has("macunix") <-- false on new macports vim?
+    if isdirectory("/Applications") 
         let l:ext = "dylib"
     else
         let l:ext = "so"
