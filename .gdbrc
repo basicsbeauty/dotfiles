@@ -1,3 +1,25 @@
 set history save on
 set history size 10000
 set history filename ~/.gdb_history
+
+define dumbwalk
+    set $frame = $arg0
+    while $frame != 0
+        set $fframe = *(void **) $frame
+        set $fpc = *(void **) ($frame + 4)
+        printf "sp=%x pc=%x\n", $fframe, $fpc
+        set $frame = $fframe
+    end
+end
+
+# note: can't recover from this and it doesn't actually work because derp
+define dumbcall
+    set $func = $arg0
+    set $dummy = $arg1
+
+    set $pc = $func
+    set $lr = $dummy
+    break $lr
+    cont
+    print/x $r0
+end

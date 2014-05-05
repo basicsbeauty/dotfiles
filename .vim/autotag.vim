@@ -1,14 +1,14 @@
 function! GetAutoTag()
-     if !exists("b:cscopedir") && filereadable("cscope.out")
-         let b:cscopedir = getcwd()
+     if !exists("s:cscopedir") && filereadable("cscope.out")
+         let s:cscopedir = getcwd()
          execute "cscope add cscope.out"
      endif
 endfunction
 
 function! AutoTag()
     call GetAutoTag()
-    if exists("b:cscopedir") && !filereadable(b:cscopedir . "/dont-autotag")
-      call system("cd " . shellescape(b:cscopedir) . "; cscope -bR -s . >&/dev/null &")
+    if exists("s:cscopedir") && !filereadable(s:cscopedir . "/dont-autotag")
+      call system("cd " . shellescape(s:cscopedir) . "; cscope -bR -s . >&/dev/null &")
       cscope reset
     endif
 endfunction
